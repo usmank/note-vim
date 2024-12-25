@@ -9,27 +9,33 @@ if exists("b:current_syntax")
 endif
 
 syn keyword noteGeneralKeywords TODO MEETING
+syn match   noteHeader          "\v^#.*"
 syn match   noteWorkItem        "\v<[A-Z]{4,}-\d{2,}>"
 syn match   noteCheckbox        "\v\[ \]"
 syn match   noteCheckedbox      "\v\[x\]"
+syn match   notePartialCheckedbox "\v\[-\]"
+syn match   noteCheckedbox      "\v\[x\]"
+syn match   noteListItem        "\v\s*-\s"
 syn match   noteEmphasis        "\v<__.+__>"
-syn match   noteDate            "\v<(\d{2}/\d{2}/\d{2}|\d{4}-\d{2}-\d{2})>"
-syn match   noteTime            "\v<\d{1,2}:\d{2}(:\d{2}(.\d+)?)?( (am|AM|pm|PM))?>"
+syn match   noteDate            "\v<(\d{2}/\d{2}/\d{2}|\d{4}-\d{1,2}-\d{1,2})>"
+syn match   noteTime            "\v<\d{1,2}:\d{2}(:\d{2}(.\d+)?)?(\s?(am|AM|pm|PM))?>"
 syn match   noteUrl             "\v<https?://\S+>"
+syn match   noteSubject         "\v\s(\s|\w|\(|\)|\{|\}|\<|\>|-)+: " contained
+syn match   noteInlineCode      "\v`[^`]+`"
+syn region  noteLineStart       start="\v^\s*\[.\]\s*" end="\v$" oneline contains=noteSubject,noteCheckbox,noteCheckedbox,noteInlineCode,noteDate,noteTime,noteEmphasis fold
 
-highlight def link noteGeneralKeywords  Keyword
-highlight def link noteWorkItem         NoteWorkItem
-highlight def link noteCheckbox         NoteNotDone
-highlight def link noteCheckedbox       NoteDone
-highlight def link noteEmphasis         NoteBold
-highlight def link noteDate             NoteDateTime
-highlight def link noteTime             NoteDateTime
-highlight def link noteUrl              NoteUrl
+highlight def link noteCheckbox             Type
+highlight def link noteCheckedbox           String
+highlight def link notePartialCheckedbox    Type
+highlight def link noteDate                 Number
+highlight def link noteTime                 Number
+highlight def link noteEmphasis             WarningMsg
+highlight def link noteGeneralKeywords      Todo
+highlight def link noteHeader               noteHeader
+highlight def link noteListItem             Type
+highlight def link noteSubject              Title
+highlight def link noteUrl                  Operator
+highlight def link noteInlineCode           Keyword
 
-highlight NoteWorkItem ctermfg=4 cterm=Bold
-highlight NoteNotDone ctermfg=1 cterm=Bold
-highlight NoteDone ctermfg=2 cterm=Bold
-highlight NoteBold ctermfg=1 cterm=Bold
-highlight NoteDateTime ctermfg=3 cterm=None
-highlight NoteUrl ctermfg=3 cterm=None
+highlight noteHeader cterm=bold gui=bold
 
